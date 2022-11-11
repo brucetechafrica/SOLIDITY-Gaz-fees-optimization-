@@ -41,4 +41,12 @@ Saving data on storage memory is expensive, if you manage to reduce the amount o
 🔺 Merkle Proofs : If you need to use the blockchain to verify if some information is valid or not, you can use merkle proofs. A merkle proof uses a single chunk of data in order to prove the validity of a much larger amount of data. The idea is that you will only need tot store the Merkle tree root on the blockchain (Hash12345678) in order to be able to validate multiple transactions (Tx1 …. Tx8). If for example someone wants to prove “Tx4” validity, he will need to provide Tx4, Hash3, Hash12 and Hash5678, then your contract will be able to recalculate the merkle root (Hash12345678) and check if it corresponds to the one stored on the blockchain. You will not need to store the hashes of all the transactions.
 
 
+# 🔴Minimize on-chain operations
 
+Only add to your smart contracts the functionality that for security, legal, or any other very good reason, needs to be performed on the blockchain. Keep all the remaining tasks off-chain, in a dedicated backend or even your front end, that way you will save transaction gas.
+
+🔺 Strings : strings are just bytes to ethereum. Even if both data types exist, the EVM will process strings as bytes, which requires some overhead, meaning that if you can use bytes instead of strings do it. If you still need to use strings, then try to keep string operations (concatenation, etc…) outside of your smart contracts.
+
+🔺 Return storage values : if you need to return storage values after executing some functionality. Return it as it is, without transforming it, let the off-chain application retrieving the data do the work (extract certain values from an array etc…).
+
+🔺 Looping : avoid looping through long arrays, not only it will cost a lot a gas but it can even make your contract impossible to be executed if gas costs increase to much (beyond the Block gas limit). Use mappings instead which are hash tables that will let you access any value in a single operation using its key, instead of looping through an array until you find the key you are looking for.
