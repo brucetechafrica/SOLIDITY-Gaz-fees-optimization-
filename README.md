@@ -50,3 +50,7 @@ Only add to your smart contracts the functionality that for security, legal, or 
 🔺 Return storage values : if you need to return storage values after executing some functionality. Return it as it is, without transforming it, let the off-chain application retrieving the data do the work (extract certain values from an array etc…).
 
 🔺 Looping : avoid looping through long arrays, not only it will cost a lot a gas but it can even make your contract impossible to be executed if gas costs increase to much (beyond the Block gas limit). Use mappings instead which are hash tables that will let you access any value in a single operation using its key, instead of looping through an array until you find the key you are looking for.
+
+🔺 Local storage : local storage variables are method local variables that point to an actual state variable (stored in storage). Instead of copy/pasting storage arrays in memory in order to manipulate them, then copying them back to storage, simply use local storage variables and work on the storage directly.
+
+# 🔴Variables Ordering
