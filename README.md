@@ -54,3 +54,8 @@ Only add to your smart contracts the functionality that for security, legal, or 
 🔺 Local storage : local storage variables are method local variables that point to an actual state variable (stored in storage). Instead of copy/pasting storage arrays in memory in order to manipulate them, then copying them back to storage, simply use local storage variables and work on the storage directly.
 
 # 🔴Variables Ordering
+
+Solidity storage slots are 32 bytes long, but not all data types take that amount of space : bool, int8 … int128, bytes1 … bytes31 and addresses take less than 32 bytes.
+The solidity compiler will try to pack together variables in a single slot, but these variables need to be defined next to each other.
+For example, if you define 2 int128 next to each other, they will both be packed into the same storage slot since they take 16 bytes each. However if you define an int128, followed by a unit256, then another int128, you will be using 3 storage slots since the unit256 in between the 2 int128 need a full storage slot.
+
