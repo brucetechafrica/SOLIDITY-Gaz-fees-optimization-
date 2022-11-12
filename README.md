@@ -71,3 +71,7 @@ You will be able to save storage space and transaction gas doing this.
 Solidity storage slots are 32 bytes long, but not all data types take that amount of space : bool, int8 … int128, bytes1 … bytes31 and addresses take less than 32 bytes.
 The solidity compiler will try to pack together variables in a single slot, but these variables need to be defined next to each other.
 For example, if you define 2 int128 next to each other, they will both be packed into the same storage slot since they take 16 bytes each. However if you define an int128, followed by a unit256, then another int128, you will be using 3 storage slots since the unit256 in between the 2 int128 need a full storage slot.
+
+![This is an image](https://miro.medium.com/max/828/1*ZUWhvnvonDWhJv_dEJL_4Q.png)
+
+![This is an image](https://miro.medium.com/max/828/1*mKFJ9UE85mJ1uA0iQv8F4g.png)
