@@ -83,3 +83,14 @@ A minimal proxy is just a contract that will delegate all its calls to a pre-def
 Since that byte-code is so minimal, the cost of deploying it is as low as it can get, you will be saving a bunch of deployment Gas.
 There is a caveat with minimal proxies that you should keep in mind: Minimal proxy implementation contract address cannot be changed, meaning that you will not be able to migrate their code.
 
+# 🔴Contract Size
+
+Contract deployment costs depend on several things, one of them is the size of the contract you are deploying (in KB, keep in mind that there is a limit of 24KB for single contracts).
+A simple way to reduce the deployment gas, is to implement contracts as small as possible.
+
+🔺 Logs / Messages : make revert and assert messages as short as possible.
+
+🔺 Modifiers : modifier code is inlined, meaning that it gets added at the beginning and the end of the function it modifies. A trick to reduce the contract size while using modifiers is to write a function that implements the modifier logic, and make the modifier invoke that function. That way the code implementing the modifier functionality will not be replicated, only the function invocation will. This technique only works if the same modifier is used multiple times.
+
+![This is an image](https://miro.medium.com/max/828/1*HfuOdmmIyDqSLQI95hcXDA.png)
+
