@@ -68,10 +68,18 @@ You will be able to save storage space and transaction gas doing this.
 
 # 🔴Libraries (embedded, deploy)
 
-Solidity storage slots are 32 bytes long, but not all data types take that amount of space : bool, int8 … int128, bytes1 … bytes31 and addresses take less than 32 bytes.
-The solidity compiler will try to pack together variables in a single slot, but these variables need to be defined next to each other.
-For example, if you define 2 int128 next to each other, they will both be packed into the same storage slot since they take 16 bytes each. However if you define an int128, followed by a unit256, then another int128, you will be using 3 storage slots since the unit256 in between the 2 int128 need a full storage slot.
+If you are going to re-use code among your smart contracts then you better pack all that code into a library, deploy it and make your contracts point to it by importing it.
+Libraries can be of two types.
 
-![This is an image](https://miro.medium.com/max/828/1*ZUWhvnvonDWhJv_dEJL_4Q.png)
+Libraries can be of two types.
+🔺Embedded Libraries: libraries that contain internal functionality. These libraries do not get deployed but embedded into your contract, meaning that you will deploy their code along your smart contract code… You will not be re-using anything nor saving any Gas with these type of libraries….
 
-![This is an image](https://miro.medium.com/max/828/1*mKFJ9UE85mJ1uA0iQv8F4g.png)
+🔺 Deployed Libraries: libraries that contain public or external functionality. These libraries get deployed once, then all smart contracts importing them will be actually delegating calls to them. This means that the library code gets deployed only once then used by all smart contracts. You will be saving deployment Gas if you use this type of library.
+
+# 🔴Minimal Proxies (ERC 1167)
+
+If you are going to need to deploy multiple contracts with exactly the same functionality you should consider using “Minimal Proxies” (defined in the ERC 1167).
+A minimal proxy is just a contract that will delegate all its calls to a pre-defined implementation contract, nothing else. There is already a well defined byte-code that represents the Minimal proxy contract compiled code, you will simply need to insert your implementation contract address into it and you are ready to deploy as many copies of your minimal proxy as you need.
+Since that byte-code is so minimal, the cost of deploying it is as low as it can get, you will be saving a bunch of deployment Gas.
+There is a caveat with minimal proxies that you should keep in mind: Minimal proxy implementation contract address cannot be changed, meaning that you will not be able to migrate their code.
+
